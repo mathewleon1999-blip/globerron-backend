@@ -7,29 +7,29 @@
 ===================================== */
 
 :root {
-  /* Premium Luxury Theme - Gold & Deep Blue */
+  /* Default theme: LIGHT (white thunder blue) */
   color-scheme: light;
 
-  /* Premium gradient background - warm elegant tones */
-  --bg: radial-gradient(ellipse at 0% 0%, #faf8f5 0%, #f5f0e8 50%, #ebe5d9 100%);
+  /* Base background */
+  --bg: radial-gradient(circle at 20% -10%, #f4f8ff 0, #eaf2ff 45%, #dbeafe 100%);
 
-  /* Premium glass surfaces - warm ivory */
-  --surface: rgba(255, 253, 250, 0.85);
-  --surface-2: rgba(250, 247, 242, 0.7);
-  --surface-3: rgba(245, 240, 232, 0.6);
-  --border: rgba(212, 175, 55, 0.25);
+  /* Glass surfaces (light) */
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-2: rgba(255, 255, 255, 0.56);
+  --surface-3: rgba(255, 255, 255, 0.44);
+  --border: rgba(30, 94, 255, 0.22);
 
-  /* Premium text - deep charcoal */
-  --text: rgba(30, 25, 20, 0.95);
-  --muted: rgba(60, 55, 50, 0.75);
-  --muted-2: rgba(80, 75, 70, 0.6);
+  /* Text (light) */
+  --text: rgba(12, 20, 40, 0.92);
+  --muted: rgba(30, 41, 59, 0.72);
+  --muted-2: rgba(30, 41, 59, 0.62);
 
-  /* Premium Brand Colors - Gold & Deep Navy */
-  --primary: #c9a227;        /* Premium Gold */
-  --primary-600: #a88420;    /* Darker Gold */
-  --primary-50: rgba(201, 162, 39, 0.12);
-  --accent: #1a365d;         /* Deep Navy */
-  --accent-600: #0f2440;     /* Darker Navy */
+  /* Brand */
+  --primary: #1e5eff;
+  --primary-600: #1747d6;
+  --primary-50: rgba(30, 94, 255, 0.12);
+  --accent: #00a3ff;
+  --accent-600: #0077cc;
 
   /* States */
   --danger: #f43f5e;
@@ -88,30 +88,27 @@
   --duration-slow: 0.4s;
 }
 
-/* Premium Dark Theme - Luxury Gold on Deep Navy */
+/* Darker variant hook (kept for compatibility) */
 body.dark {
   color-scheme: dark;
 
-  /* Premium dark background - deep navy with warm undertones */
-  --bg: radial-gradient(ellipse at 0% 0%, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  /* darker stage + cooler accents (stronger visual delta from light) */
+  --bg: radial-gradient(circle at 20% -10%, #070c1b 0, #030615 42%, #00030a 100%);
 
-  /* Premium glass surfaces - deep charcoal navy */
-  --surface: rgba(30, 41, 59, 0.85);
-  --surface-2: rgba(15, 23, 42, 0.8);
-  --surface-3: rgba(30, 41, 59, 0.6);
-  --border: rgba(201, 162, 39, 0.2);
+  --surface: rgba(255, 255, 255, 0.07);
+  --surface-2: rgba(255, 255, 255, 0.055);
+  --surface-3: rgba(255, 255, 255, 0.045);
+  --border: rgba(148, 191, 255, 0.14);
 
-  /* Premium text - warm ivory white */
-  --text: rgba(255, 251, 245, 0.98);
-  --muted: rgba(215, 205, 195, 0.78);
-  --muted-2: rgba(195, 185, 175, 0.62);
+  --text: rgba(236, 244, 255, 0.96);
+  --muted: rgba(180, 205, 235, 0.70);
+  --muted-2: rgba(155, 185, 220, 0.62);
 
-  /* Premium Brand - Luxurious Gold */
-  --primary: #d4af37;        /* Bright Gold */
-  --primary-600: #b8960c;    /* Rich Gold */
-  --primary-50: rgba(212, 175, 55, 0.15);
-  --accent: #f4d03f;         /* Light Gold */
-  --accent-600: #c9a227;     /* Classic Gold */
+  --primary: #38bdf8;
+  --primary-600: #14b2f0;
+  --primary-50: rgba(56, 189, 248, 0.16);
+  --accent: #22c1ff;
+  --accent-600: #0ea5e9;
 }
 
 /* ================= Global ================ */
@@ -150,8 +147,8 @@ body {
   margin: 0;
   color: var(--text);
 
-  /* Premium ivory fallback */
-  background-color: #faf8f5;
+  /* fallback bg color behind gradients */
+  background-color: #f4f8ff;
   background: var(--bg);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, Arial, sans-serif;
   line-height: 1.6;
@@ -159,12 +156,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Premium light theme - elegant ivory with gold accents */
+  /* Light thunder-blue stage (so glass reads correctly) */
   background-image:
-    radial-gradient(900px 520px at 15% 10%, rgba(201, 162, 39, 0.12), transparent 56%),
-    radial-gradient(760px 480px at 85% 20%, rgba(26, 54, 93, 0.08), transparent 54%),
-    radial-gradient(760px 520px at 50% 110%, rgba(201, 162, 39, 0.06), transparent 58%),
-    radial-gradient(1200px 720px at 50% 50%, rgba(255, 253, 250, 0.9), rgba(250, 247, 242, 0.98));
+    radial-gradient(900px 520px at 15% 10%, rgba(30, 94, 255, 0.18), transparent 56%),
+    radial-gradient(760px 480px at 85% 20%, rgba(0, 163, 255, 0.12), transparent 54%),
+    radial-gradient(760px 520px at 50% 110%, rgba(23, 71, 214, 0.10), transparent 58%),
+    radial-gradient(1200px 720px at 50% 50%, rgba(255, 255, 255, 0.86), rgba(234, 242, 255, 0.96));
 
   /* Ensure footer sits at the bottom and nothing renders below it */
   min-height: 100vh;
@@ -175,14 +172,14 @@ body {
   transition: background-color .25s ease, color .25s ease;
 }
 
-/* Premium dark mode - deep navy with gold glow */
+/* Dark mode background accents (major visual difference) */
 body.dark {
-  background-color: #0f172a;
+  background-color: #020617;
   background-image:
-    radial-gradient(900px 520px at 18% 12%, rgba(212, 175, 55, 0.18), transparent 60%),
-    radial-gradient(760px 480px at 85% 18%, rgba(244, 208, 63, 0.1), transparent 60%),
-    radial-gradient(760px 520px at 50% 110%, rgba(201, 162, 39, 0.08), transparent 60%),
-    radial-gradient(1200px 720px at 50% 50%, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.99));
+    radial-gradient(900px 520px at 18% 12%, rgba(56, 189, 248, 0.22), transparent 60%),
+    radial-gradient(760px 480px at 85% 18%, rgba(34, 193, 255, 0.14), transparent 60%),
+    radial-gradient(760px 520px at 50% 110%, rgba(99, 102, 241, 0.12), transparent 60%),
+    radial-gradient(1200px 720px at 50% 50%, rgba(2, 6, 23, 0.92), rgba(2, 6, 23, 0.98));
 }
 
 .container {
