@@ -269,10 +269,17 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123"
 
 /* ---------- AUTH ---------- */
 function requireAdmin(req, res, next) {
-  if (!req.session.isAdmin) {
-    return res.status(401).json({ message: "Not authorised" })
+  // Check session first
+  if (req.session.isAdmin) {
+    return next()
   }
-  next()
+  // Check admin-token cookie for stateless auth (Vercel)
+  const adminToken = req.cookies?.adminToken
+  if (adminToken && adminToken.startsWith('admin:')) {
+    req.session.isAdmin = true
+    return next()
+  }
+  return res.status(401).json({ message: "Not authorised" })
 }
 
 function requireUser(req, res, next) {
@@ -312,8 +319,16 @@ app.post("/api/admin/login", async (req, res) => {
     }
 
     req.session.isAdmin = true
-    const token = Buffer.from(`admin:${Date.now()}`).toString('base64')
+    const token = `admin:${Date.now()}`
     req.session.adminToken = token
+
+    // Set cookie for stateless auth (Vercel compatibility)
+    res.cookie('adminToken', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    })
 
     return res.json({ token, success: true })
   } catch (e) {
@@ -329,6 +344,14 @@ app.post('/api/admin/login/start', (req, res) => {
 
 app.post('/api/admin/login/verify-otp', (req, res) => {
   return res.status(410).json({ message: 'OTP login removed. Use /api/admin/login' })
+})
+
+// Admin logout - clears session and cookie
+app.post('/api/admin/logout', (req, res) => {
+  req.session.isAdmin = false
+  req.session.adminToken = null
+  res.clearCookie('adminToken')
+  res.json({ success: true })
 })
 
 /* ---------- CUSTOMER AUTH ---------- */
@@ -961,10 +984,23 @@ function bearerAdmin(req, res, next){
 app.use(bearerAdmin)
 
 /* ---------- ADMIN PAGE ---------- */
-app.get("/admin.html", (req, res) => {
-  if (!req.session.isAdmin) {
-    return res.redirect("/admin-login.html")
+// Check for admin auth via session OR cookie (for Vercel stateless compatibility)
+function checkAdminAuth(req, res, next) {
+  // Check session first
+  if (req.session.isAdmin) {
+    return next()
   }
+  // Check admin-token cookie for stateless auth (Vercel)
+  const adminToken = req.cookies?.adminToken
+  if (adminToken && adminToken.startsWith('admin:')) {
+    req.session.isAdmin = true
+    return next()
+  }
+  // Not authenticated
+  return res.redirect("/admin-login.html")
+}
+
+app.get("/admin.html", checkAdminAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/admin.html"))
 })
 
