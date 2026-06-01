@@ -1,11 +1,26 @@
+// Vercel serverless handler
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 
 // Import the Express app
 const app = require('../src/app');
 
-// Add static file serving for Vercel
-app.use(express.static(path.join(__dirname, '../public')));
+// Serve static files for Vercel (public files are included via vercel.json)
+const publicDir = path.join(__dirname, '../public');
+if (fs.existsSync(publicDir)) {
+  app.use(express.static(publicDir, {
+    etag: true,
+    lastModified: true,
+    maxAge: '30d'
+  }));
+}
 
-// Vercel serverless handler
-module.exports = app;
+// Vercel serverless export
+module.exports = (req, res) => {
+  // Ensure trust proxy is set for Vercel
+  app.set('trust proxy', 1);
+  
+  // Handle the request
+  return app(req, res);
+};

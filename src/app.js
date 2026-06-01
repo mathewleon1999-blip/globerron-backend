@@ -15,11 +15,15 @@ const Stripe = require("stripe")
 const crypto = require("crypto")
 
 // Load env vars deterministically.
-// 1) Prefer project-root .env (../.env relative to this file)
-// 2) Fallback to process.cwd() (useful for local dev / alternate launch dirs)
-// NOTE: dotenv only sets variables that are not already set, so a hosting panel can override.
-require("dotenv").config({ path: path.resolve(__dirname, "../.env"), override: false })
-require("dotenv").config({ path: path.resolve(process.cwd(), ".env"), override: false })
+// Only load from .env file if it exists (Vercel/Render provide env vars directly)
+try {
+  const envPath = path.resolve(__dirname, "../.env")
+  if (fs.existsSync(envPath)) {
+    require("dotenv").config({ path: envPath, override: false })
+  }
+} catch {
+  // Ignore - env vars will come from hosting platform
+}
 
 // Optional (recommended in production): Redis-backed sessions
 let RedisStore
