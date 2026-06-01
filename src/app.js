@@ -292,33 +292,8 @@ app.post("/api/login", (req, res) => {
   res.status(401).json({ message: "Invalid password" })
 })
 
-/* ---------- ADMIN LOGIN (2FA via Email OTP) ---------- */
-const ADMIN_OTP_TTL_MS = 10 * 60 * 1000
-
-function adminOtpRecipient(){
-  // For this setup, OTP is sent to a fixed personal email.
-  // Fallback to ADMIN_EMAIL if ADMIN_OTP_EMAIL is not provided.
-  return String(process.env.ADMIN_OTP_EMAIL || process.env.ADMIN_EMAIL || '').trim().toLowerCase()
-}
-
-function adminOtpStorePut(req, otp){
-  req.session.adminOtpHash = otp ? bcrypt.hashSync(String(otp), 10) : null
-  req.session.adminOtpExpiresAt = otp ? (Date.now() + ADMIN_OTP_TTL_MS) : null
-  req.session.adminOtpPending = true
-}
-
-function adminOtpStoreClear(req){
-  req.session.adminOtpHash = null
-  req.session.adminOtpExpiresAt = null
-  req.session.adminOtpPending = false
-}
-
-function generateAdminOtp(){
-  return String(Math.floor(100000 + Math.random() * 900000))
-}
-
-// Step 1: verify password and send OTP
-app.post('/api/admin/login/start', async (req, res) => {
+/* ---------- ADMIN LOGIN (simple password only) ---------- */
+app.post("/api/admin/login", async (req, res) => {
   try {
     const { email, password } = req.body || {}
 
@@ -336,69 +311,24 @@ app.post('/api/admin/login/start', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' })
     }
 
-    const otpTo = adminOtpRecipient()
-    if (!otpTo) {
-      return res.status(500).json({ message: 'Admin OTP email is not configured (ADMIN_OTP_EMAIL)' })
-    }
-
-    const otp = generateAdminOtp()
-    adminOtpStorePut(req, otp)
-
-    const { sendMail } = require('./services/mailer')
-    await sendMail({
-      to: otpTo,
-      subject: 'Admin OTP (JIEDIZHEN)',
-      text:
-        `Your admin login OTP is: ${otp}\n` +
-        `This code expires in 10 minutes.\n\n` +
-        `If you did not request this, you can ignore this email.\n`
-    })
-
-    console.log('Admin OTP sent:', { to: otpTo })
-
-    return res.json({ success: true, otpSentTo: otpTo })
-  } catch (e) {
-    console.error('Admin OTP send failed:', {
-      code: e?.code,
-      responseCode: e?.responseCode,
-      message: e?.message || String(e)
-    })
-    return res.status(500).json({ message: 'Failed to send admin OTP' })
-  }
-})
-
-// Step 2: verify OTP and establish admin session
-app.post('/api/admin/login/verify-otp', async (req, res) => {
-  try {
-    const otp = String(req.body?.otp || '').trim()
-    if (!otp) return res.status(400).json({ message: 'OTP is required' })
-
-    const exp = Number(req.session.adminOtpExpiresAt || 0)
-    if (!req.session.adminOtpPending || !req.session.adminOtpHash || !exp || Date.now() > exp) {
-      return res.status(401).json({ message: 'OTP expired. Please login again.' })
-    }
-
-    const ok = await bcrypt.compare(otp, req.session.adminOtpHash)
-    if (!ok) return res.status(401).json({ message: 'Invalid OTP' })
-
-    adminOtpStoreClear(req)
-
     req.session.isAdmin = true
     const token = Buffer.from(`admin:${Date.now()}`).toString('base64')
     req.session.adminToken = token
 
     return res.json({ token, success: true })
   } catch (e) {
-    console.error(e)
-    return res.status(500).json({ message: 'OTP verification failed' })
+    console.error('Admin login failed:', e)
+    return res.status(500).json({ message: 'Login failed' })
   }
 })
 
-// Backwards compatibility: keep /api/admin/login but require 2FA by default
-app.post("/api/admin/login", async (req, res) => {
-  return res.status(400).json({
-    message: 'Use /api/admin/login/start then /api/admin/login/verify-otp'
-  })
+// Remove old OTP endpoints (return error if called)
+app.post('/api/admin/login/start', (req, res) => {
+  return res.status(410).json({ message: 'OTP login removed. Use /api/admin/login' })
+})
+
+app.post('/api/admin/login/verify-otp', (req, res) => {
+  return res.status(410).json({ message: 'OTP login removed. Use /api/admin/login' })
 })
 
 /* ---------- CUSTOMER AUTH ---------- */
