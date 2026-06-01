@@ -21,10 +21,6 @@
     return null;
   }
 
-  const otpWrap = qs('otp-wrap');
-  const otpEl = qs('otp');
-  let otpStep = false;
-
   async function login() {
     setError('');
     const email = (emailEl && emailEl.value || '').trim();
@@ -34,60 +30,34 @@
     if (vErr) { setError(vErr); return; }
 
     try {
-      if (submitBtn) submitBtn.disabled = true;
-
-      if (!otpStep) {
-        if (submitBtn) submitBtn.textContent = 'Sending OTP...';
-
-        const res = await fetch('/api/admin/login/start', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ email, password })
-        });
-
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          setError(data.message || 'Invalid credentials');
-          return;
-        }
-
-        otpStep = true;
-        if (otpWrap) otpWrap.style.display = 'block';
-        if (otpEl) otpEl.focus();
-        if (submitBtn) submitBtn.textContent = 'Verify OTP';
-        return;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Logging in...';
       }
 
-      // OTP step
-      const otp = String(otpEl?.value || '').trim();
-      if (!otp) {
-        setError('Enter the OTP sent to your admin email');
-        return;
-      }
-
-      if (submitBtn) submitBtn.textContent = 'Verifying...';
-
-      const res2 = await fetch('/api/admin/login/verify-otp', {
+      const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ otp })
+        body: JSON.stringify({ email, password })
       });
 
-      const data2 = await res2.json().catch(() => ({}));
-      if (!res2.ok) {
-        setError(data2.message || 'Invalid OTP');
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.message || 'Invalid credentials');
         return;
       }
 
+      // Login successful - redirect to admin panel
       location.href = '/admin.html';
 
     } catch (err) {
       setError('Network error. Try again.');
     } finally {
-      if (submitBtn) submitBtn.disabled = false;
-      if (submitBtn && !otpStep) submitBtn.textContent = 'Login';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Login';
+      }
     }
   }
 
