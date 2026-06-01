@@ -78,6 +78,14 @@
   --space-8: 32px;
   --space-9: 40px;
   --space-10: 48px;
+
+  /* Animation timing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: cubic-bezier(0.68, -0.3, 0.32, 1.3);
+  --duration-fast: 0.15s;
+  --duration-base: 0.25s;
+  --duration-slow: 0.4s;
 }
 
 /* Darker variant hook (kept for compatibility) */
@@ -2001,6 +2009,260 @@ body.dark textarea {
 @media (max-width: 480px){
   .cart { width: 100%; padding: 20px 18px 18px; }
   .cart-total { font-size: 15px; }
+}
+
+/* ================= Smooth Animations & Enhanced Mobile ================ */
+
+/* Page load animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Apply animations to elements */
+.container > * {
+  animation: fadeInUp var(--duration-slow) var(--ease-out-expo) forwards;
+}
+
+.container > *:nth-child(1) { animation-delay: 0.05s; }
+.container > *:nth-child(2) { animation-delay: 0.1s; }
+.container > *:nth-child(3) { animation-delay: 0.15s; }
+.container > *:nth-child(4) { animation-delay: 0.2s; }
+
+/* Enhanced button animations */
+.button,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--duration-fast) var(--ease-out-back),
+    box-shadow var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    filter var(--duration-fast) ease;
+}
+
+/* Button ripple effect */
+.button::after,
+button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+  opacity: 0;
+}
+
+.button:active::after,
+button:active::after {
+  width: 200%;
+  height: 200%;
+  opacity: 1;
+  transition: 0s;
+}
+
+/* Primary button glow */
+.button.primary,
+#save-vehicle,
+#checkout-btn,
+.cta-btn {
+  box-shadow:
+    0 4px 14px rgba(30, 94, 255, 0.35),
+    0 0 0 1px rgba(30, 94, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.button.primary:hover,
+#save-vehicle:hover,
+#checkout-btn:hover,
+.cta-btn:hover {
+  box-shadow:
+    0 8px 28px rgba(30, 94, 255, 0.45),
+    0 0 0 1px rgba(30, 94, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Filter buttons enhancement */
+.filter-btn {
+  transition:
+    transform var(--duration-fast) var(--ease-out-back),
+    box-shadow var(--duration-fast) var(--ease-out-expo),
+    background var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.filter-btn.active {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Card hover lift effect */
+.card {
+  transition:
+    transform var(--duration-base) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Mobile product grid improvements */
+@media (max-width: 768px) {
+  /* Better mobile product grid */
+  #products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  /* Larger touch targets on mobile */
+  .product-card {
+    min-height: 280px;
+  }
+
+  /* Smoother animations on mobile */
+  .product-card,
+  .button,
+  .filter-btn {
+    transition-duration: var(--duration-fast);
+  }
+
+  /* Header animation */
+  .site-header {
+    animation: fadeIn var(--duration-slow) var(--ease-out-expo) forwards;
+  }
+
+  /* Vehicle selector animation */
+  .vehicle-selector {
+    animation: fadeInUp var(--duration-slow) var(--ease-out-expo) forwards;
+    animation-delay: 0.1s;
+    opacity: 0;
+  }
+
+  /* Hero section animation */
+  .hero-video {
+    animation: fadeInUp var(--duration-slow) var(--ease-out-expo) forwards;
+    animation-delay: 0.05s;
+    opacity: 0;
+  }
+
+  /* Cart slide in animation */
+  .cart {
+    animation: slideInRight var(--duration-base) var(--ease-out-expo) forwards;
+  }
+
+  /* Better mobile buttons */
+  .button,
+  button {
+    min-height: 48px;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+
+  /* Touch feedback */
+  .button:active,
+  button:active,
+  .product-card:active {
+    transform: scale(0.98);
+    transition-duration: 0.05s;
+  }
+}
+
+@media (max-width: 520px) {
+  #products {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Larger product cards on mobile */
+  .product-card {
+    min-height: 320px;
+  }
+}
+
+/* Loading skeleton animation */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--surface-2) 50%,
+    var(--surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Scroll-triggered animations */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-animate {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--duration-slow) var(--ease-out-expo),
+                transform var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .scroll-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /*

@@ -319,3 +319,123 @@
   opacity: 1;
   transform: translateX(0);
 }
+
+/* ================= Mobile Enhancements ================ */
+
+@media (max-width: 768px) {
+  /* Better mobile product cards */
+  .product-card {
+    border-radius: 16px;
+    box-shadow: 0 14px 48px rgba(2, 6, 23, 0.45);
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 64px rgba(2, 6, 23, 0.55);
+  }
+
+  .product-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  /* Larger touch targets */
+  .product-image-wrapper {
+    height: clamp(160px, 28vw, 200px);
+  }
+
+  /* Better text sizing on mobile */
+  .product-header h3 {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .part-number {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
+
+  /* Always show view details on mobile */
+  .view-details {
+    opacity: 0.9;
+    transform: translateX(0);
+    font-size: 0.85rem;
+    color: rgba(180, 220, 255, 0.98);
+  }
+
+  /* Touch-friendly footer */
+  .product-footer {
+    gap: 12px;
+    padding-top: 14px;
+  }
+
+  .price {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Single column improvements */
+  .product-card {
+    min-height: 340px;
+  }
+
+  .product-image-wrapper {
+    height: 180px;
+  }
+
+  .product-content {
+    padding: 18px;
+    gap: 14px;
+  }
+
+  .product-header h3 {
+    font-size: 1.1rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .part-number {
+    font-size: 0.85rem;
+  }
+
+  .product-tags {
+    gap: 8px;
+  }
+
+  .stock-tag, .promo-tag, .brand-tag {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+  }
+
+  .price {
+    font-size: 1.3rem;
+  }
+
+  /* Animation for mobile */
+  .product-card {
+    animation: cardFadeIn 0.4s ease-out forwards;
+  }
+
+  @keyframes cardFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Loading state for mobile */
+@media (max-width: 768px) {
+  .product-card.is-loading {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .product-card.is-loading .product-image-wrapper::before {
+    animation-duration: 1.2s;
+  }
+}
