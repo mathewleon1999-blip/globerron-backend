@@ -1,11 +1,18 @@
 const express = require("express")
 const Stripe = require("stripe")
 const path = require("path")
+const fs = require("fs")
 
 // Ensure env vars are loaded when this file is required directly.
-// This resolves to project root: src/routes -> ../..
-require("dotenv").config({ path: path.resolve(__dirname, "../../.env") })
-require("dotenv").config({ path: path.resolve(process.cwd(), ".env") })
+// Only load from .env file if it exists (Vercel/Render provide env vars directly)
+try {
+  const envPath = path.resolve(__dirname, "../../.env")
+  if (fs.existsSync(envPath)) {
+    require("dotenv").config({ path: envPath })
+  }
+} catch {
+  // Ignore - env vars will come from hosting platform
+}
 
 const stripeKey = process.env.STRIPE_SECRET_KEY
 const stripe = stripeKey ? new Stripe(stripeKey) : null
