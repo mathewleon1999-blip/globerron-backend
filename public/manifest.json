@@ -1,0 +1,17 @@
+{
+  "name": "JIEDIZHEN",
+  "short_name": "JIEDIZHEN",
+  "description": "JIEDIZHEN web app",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "icons": [
+    {
+      "src": "/images/jdz-logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

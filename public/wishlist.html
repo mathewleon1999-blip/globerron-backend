@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wishlist | JIEDIZHEN</title>
+  <link rel="icon" href="/images/jdz-logo.jpeg" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/product-card.css" />
+  <link rel="stylesheet" href="/wishlist.css?v=20260214" />
+  <script src="/theme.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/index.html" aria-label="JIEDIZHEN Home">
+        <img src="/images/jdz-logo.jpeg" alt="JIEDIZHEN" height="40" />
+      </a>
+
+      <nav class="site-nav">
+        <a href="/index.html">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/compare.html">Compare</a>
+        <a class="active" href="/wishlist.html">Wishlist</a>
+        <div id="auth-controls" style="display:inline-flex;align-items:center;gap:10px;margin-left:12px;">
+          <span id="auth-user" style="display:none;font-size:14px;">Hello</span>
+          <a id="auth-login" href="/login.html" style="display:inline-block;">Login</a>
+          <button id="auth-logout" type="button" style="display:none;">Logout</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container wishlist-page">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <h1 style="margin:0;">My Wishlist</h1>
+      <button id="wishlist-clear" class="btn btn-secondary" type="button">Clear all</button>
+    </div>
+
+    <section id="wishlist-empty" class="wishlist-empty" hidden>
+      <p>Your wishlist is empty.</p>
+      <a href="/index.html" class="btn btn-primary">Browse products</a>
+    </section>
+
+    <section id="wishlist-items" class="wishlist-grid" aria-live="polite"></section>
+  </main>
+
+  <template id="wishlist-item-template">
+    <article class="product-card" data-product-id="">
+      <div class="product-media">
+        <img class="product-image" src="" alt="" loading="lazy" />
+      </div>
+      <div class="product-info">
+        <h3 class="product-title"></h3>
+        <p class="product-meta">
+          <span class="product-vehicle"></span>
+        </p>
+        <div class="product-actions">
+          <button class="btn btn-secondary remove-btn" type="button">Remove</button>
+          <button class="btn btn-primary add-to-cart-btn" type="button">Add to Enquiry</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> JIEDIZHEN. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/wishlist-inline.js" defer></script>
+
+  <!-- Keep main site script to preserve shared header behaviours if any -->
+  <script src="/script.js" defer></script>
+</body>
+</html>

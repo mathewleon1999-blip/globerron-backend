@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Block utility/auth/admin pages from indexing
+Disallow: /admin.html
+Disallow: /admin-login.html
+Disallow: /admin-orders.html
+Disallow: /account.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /reset-password.html
+Disallow: /my-orders.html
+Disallow: /checkout.html
+Disallow: /success.html
+Disallow: /cancel.html
+Disallow: /offline.html
+
+Sitemap: https://jdzinternational.com/sitemap.xml

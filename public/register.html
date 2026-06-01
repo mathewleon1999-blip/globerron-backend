@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial,sans-serif;background:#f5f5f5;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
+    .box{background:#fff;padding:28px 24px;width:380px;border-radius:10px;box-shadow:0 12px 28px rgba(0,0,0,.12)}
+    h2{margin:0 0 16px;font-size:20px}
+    label{font-size:13px;color:#333;display:block;margin:10px 0 6px}
+    input{width:100%;padding:10px 11px;border:1px solid #ddd;border-radius:6px;font-size:14px}
+    input:focus{outline:none;border-color:#000}
+    button{width:100%;padding:11px;margin-top:14px;background:#000;color:#fff;border:none;border-radius:6px;cursor:pointer}
+    button:hover{background:#333}
+    .row{display:flex;gap:10px}
+    .error{color:#c0392b;margin-top:10px;font-size:13px}
+    .hint{font-size:12px;color:#777;margin-top:8px}
+    .alt{margin-top:14px;text-align:center;font-size:14px}
+    .alt a{color:#000;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Create your account</h2>
+    <form id="register-form">
+      <label for="name">Full name</label>
+      <input id="name" type="text" placeholder="e.g. John Doe" required>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" required>
+
+      <label for="phone">Phone (WhatsApp)</label>
+      <input id="phone" type="tel" placeholder="e.g. 9715XXXXXXXX" required>
+
+      <div class="row">
+        <div style="flex:1">
+          <label for="password">Password</label>
+          <input id="password" type="password" required>
+        </div>
+        <div style="flex:1">
+          <label for="confirm">Confirm password</label>
+          <input id="confirm" type="password" required>
+        </div>
+      </div>
+
+      <button type="submit">Create account</button>
+      <div class="hint">By creating an account you agree to our terms and privacy policy.</div>
+    </form>
+
+    <div id="error" class="error"></div>
+    <div class="alt">Already have an account? <a id="login-link" href="/login.html">Login</a></div>
+  </div>
+  <script>
+    function getNext(){
+      const p=new URLSearchParams(location.search);return p.get('next')||'/'
+    }
+    document.getElementById('login-link').href = '/login.html?next=' + encodeURIComponent(getNext())
+
+    document.getElementById('register-form').addEventListener('submit', async (e)=>{
+      e.preventDefault()
+      const errorEl = document.getElementById('error')
+      errorEl.textContent = ''
+      const name = document.getElementById('name').value.trim()
+      const email = document.getElementById('email').value.trim()
+      const phone = document.getElementById('phone').value.trim()
+      const password = document.getElementById('password').value
+      const confirmPassword = document.getElementById('confirm').value
+
+      try{
+        const res = await fetch('/api/auth/register',{
+          method:'POST',headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ name, email, phone, password, confirmPassword })
+        })
+        if(!res.ok){
+          const data = await res.json().catch(()=>({error:'Registration failed'}))
+          errorEl.textContent = data.error || 'Registration failed'
+          return
+        }
+        // success -> redirect to next
+        location.href = getNext()
+      }catch(err){
+        errorEl.textContent = 'Network error. Please try again.'
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "name": "jiedzhen-backend",
+  "version": "1.0.0",
+  "description": "JIEDIZHEN Auto Spare Parts Trading backend",
+  "private": true,
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node src/app.js",
+    "desktop": "node_modules/.bin/electron electron/main.js",
+    "cap:sync": "npx cap sync",
+    "android": "npx cap open android",
+    "ios": "npx cap open ios",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "jiedzhen",
+    "auto-parts",
+    "ecommerce",
+    "stripe",
+    "express",
+    "backend"
+  ],
+  "author": "JIEDIZHEN Auto Spare Parts Trading",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.6.2",
+    "compression": "^1.8.1",
+    "connect-redis": "^9.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.17.3",
+    "helmet": "^7.1.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^8.0.0",
+    "pg": "^8.18.0",
+    "pino": "^9.0.0",
+    "redis": "^5.10.0",
+    "sharp": "^0.33.4",
+    "stripe": "^20.3.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.1.0",
+    "@capacitor/cli": "^8.1.0",
+    "@capacitor/core": "^8.1.0",
+    "@capacitor/ios": "^8.1.0",
+    "electron": "^40.4.0",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-security": "^3.0.1",
+    "prettier": "^3.3.3"
+  }
+}

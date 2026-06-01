@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Orders</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Orders</h2>
+
+  <div style="display:flex;gap:8px;margin:12px 0;align-items:center">
+    <input id="search" placeholder="Search by Order ID, name, phone, city" style="flex:1;padding:8px;border:1px solid #ddd;border-radius:6px"/>
+    <select id="filterStatus" style="padding:8px;border:1px solid #ddd;border-radius:6px">
+      <option value="">All Status</option>
+      <option>New</option>
+      <option>Packed</option>
+      <option>Shipped</option>
+      <option>Delivered</option>
+    </select>
+    <button id="refresh" class="btn">Refresh</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>City</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="orders"></tbody>
+  </table>
+</div>
+
+<div id="orderModal" class="modal">
+  <div class="card">
+    <h3>Order Details</h3>
+    <div id="orderBody" style="margin:10px 0"></div>
+    <div class="actions">
+      <button id="setNew" class="btn">New</button>
+      <button id="setPacked" class="btn">Packed</button>
+      <button id="setShipped" class="btn">Shipped</button>
+      <button id="setDelivered" class="btn">Delivered</button>
+      <button id="closeModal" class="btn primary" style="margin-left:auto">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="/admin-orders.js"></script>
+</body>
+</html>

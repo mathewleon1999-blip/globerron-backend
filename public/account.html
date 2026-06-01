@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Account</title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    :root{
+      --acc-bg1:#f7f8ff;
+      --acc-bg2:#eef2ff;
+      --acc-card:rgba(255,255,255,.86);
+      --acc-text:#0f172a;
+      --acc-muted:#475569;
+      --acc-border:rgba(15,23,42,.10);
+      --acc-brand:#071a3d;
+      --acc-brand-2:#3b82f6;
+      --acc-danger:#b00020;
+      --acc-shadow:0 18px 40px rgba(2,6,23,.12);
+    }
+
+    body{
+      background: radial-gradient(1200px 800px at 10% 10%, var(--acc-bg2), transparent 55%),
+                  radial-gradient(1200px 800px at 90% 0%, rgba(59,130,246,.18), transparent 50%),
+                  linear-gradient(180deg, var(--acc-bg1), #ffffff 60%);
+      color:var(--acc-text);
+    }
+
+    .wrap{max-width:1120px;margin:28px auto;padding:0 16px;}
+
+    .top{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+      padding:14px 14px;
+      border:1px solid var(--acc-border);
+      background:rgba(255,255,255,.72);
+      backdrop-filter: blur(10px);
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(2,6,23,.06);
+      position:sticky;top:10px;z-index:3;
+    }
+
+    .top h2{font-size:22px;letter-spacing:.2px;}
+    .muted{color:var(--acc-muted)}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;}
+    @media (min-width: 960px){.grid{grid-template-columns:1fr 1fr;}}
+
+    .card{
+      background:var(--acc-card);
+      border:1px solid var(--acc-border);
+      border-radius:16px;
+      padding:16px;
+      box-shadow:var(--acc-shadow);
+    }
+
+    #status.card{box-shadow:0 12px 26px rgba(2,6,23,.08)}
+
+    .row-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(7,26,61,.18);
+      background:linear-gradient(180deg, #0a2454, var(--acc-brand));
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      box-shadow:0 10px 20px rgba(7,26,61,.18);
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 14px 26px rgba(7,26,61,.22)}
+    .btn:active{transform:translateY(0)}
+
+    .btn.secondary{
+      background:#fff;
+      color:var(--acc-brand);
+      border:1px solid rgba(15,23,42,.14);
+      box-shadow:none;
+    }
+    .btn.secondary:hover{box-shadow:0 10px 20px rgba(2,6,23,.08)}
+
+    .btn.danger{
+      background:linear-gradient(180deg, #d01a3a, var(--acc-danger));
+      border-color:rgba(176,0,32,.55);
+      color:#fff;
+      box-shadow:0 10px 20px rgba(176,0,32,.18);
+    }
+
+    label{display:block;font-weight:800;margin:12px 0 6px;}
+
+    input{
+      width:100%;
+      padding:11px 12px;
+      border:1px solid rgba(15,23,42,.14);
+      border-radius:12px;
+      outline:none;
+      background:rgba(255,255,255,.92);
+      transition:border-color .12s ease, box-shadow .12s ease;
+    }
+    input:focus{border-color:rgba(59,130,246,.9);box-shadow:0 0 0 4px rgba(59,130,246,.16)}
+
+    .hr{height:1px;background:rgba(15,23,42,.10);margin:14px 0;}
+
+    .err{color:var(--acc-danger);font-weight:800;}
+    .ok{color:#166534;font-weight:800;}
+
+    table{width:100%;border-collapse:collapse;background:rgba(255,255,255,.92);border-radius:14px;overflow:hidden;border:1px solid rgba(15,23,42,.10)}
+    th,td{padding:12px 10px;border-bottom:1px solid rgba(15,23,42,.08);text-align:left;font-size:14px;}
+    th{background:linear-gradient(180deg, rgba(246,247,251,.95), rgba(238,242,255,.95));font-weight:900;}
+
+    /* Mobile/tablet: make order history table scroll instead of forcing zoom-out */
+    .table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px}
+    .table-scroll table{min-width:640px}
+
+    @media (max-width: 640px){
+      .top{position:static;top:auto}
+      .top h2{font-size:18px}
+      .row-actions{width:100%}
+      .quick-links{width:100%}
+      .quick-links a{flex:1 1 auto;justify-content:center}
+      .card{padding:14px}
+      th,td{padding:10px 8px;font-size:13px}
+    }
+
+    .badge{display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.22);color:#1d4ed8;font-weight:900;font-size:12px;}
+
+    /* New header UX idea: quick links are always visible as "tabs" (no dropdown) */
+    .quick-links{
+      display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+      padding:10px 12px;
+      border:1px dashed rgba(15,23,42,.16);
+      border-radius:14px;
+      background:rgba(255,255,255,.55);
+    }
+    .quick-links a{
+      display:inline-flex;align-items:center;
+      padding:8px 10px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:800;
+      color:var(--acc-brand);
+      border:1px solid rgba(15,23,42,.10);
+      background:rgba(255,255,255,.85);
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .quick-links a:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(2,6,23,.08)}
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,.55);
+      display:none;
+      align-items:flex-start;
+      justify-content:center;
+      padding:16px;
+      z-index:10;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modal .inner{
+      max-width:760px;
+      width:100%;
+      margin: 60px auto 24px;
+    }
+
+    /* Ensure long values (order id / tracking #) wrap instead of forcing horizontal scroll */
+    #details, #details *{
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* Buttons inside modal should wrap on small screens */
+    .modal .btn{ white-space: normal; }
+
+    @media (max-width: 640px){
+      .modal{ padding: 12px; }
+      .modal .inner{ margin-top: 18px; }
+    }
+
+    ul{margin:8px 0 0 18px;}
+
+    @media (prefers-reduced-motion: reduce){
+      .btn, .quick-links a{transition:none}
+      .btn:hover, .quick-links a:hover{transform:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h2 style="margin:0">My Account</h2>
+        <div class="muted">Manage your profile, password, account and order history</div>
+      </div>
+      <div class="row-actions">
+        <div class="quick-links" aria-label="Quick links">
+          <a href="/">Home</a>
+          <a href="#top">Profile</a>
+          <a href="#orders">Orders</a>
+          <a href="/wishlist.html">Wishlist</a>
+          <a href="/compare.html">Compare</a>
+        </div>
+        <button id="logout" class="btn secondary">Logout</button>
+      </div>
+    </div>
+
+    <div id="status" class="card" style="margin:14px 0;"></div>
+
+    <div class="grid" id="top">
+      <div class="card">
+        <h3 style="margin:0">Profile</h3>
+        <div class="muted" style="margin-top:4px">Update your personal details</div>
+
+        <div id="profileMsg" style="margin-top:10px"></div>
+
+        <label for="name">Name</label>
+        <input id="name" autocomplete="name" />
+
+        <label for="phone">Phone</label>
+        <input id="phone" autocomplete="tel" />
+
+        <label for="avatarUrl">Avatar URL (optional)</label>
+        <input id="avatarUrl" placeholder="https://..." />
+
+        <label for="company">Company (optional)</label>
+        <input id="company" />
+
+        <label for="address">Address (optional)</label>
+        <input id="address" />
+
+        <div class="hr"></div>
+        <button id="saveProfile" class="btn">Save Profile</button>
+      </div>
+
+      <div class="card">
+        <h3 style="margin:0">Security</h3>
+        <div class="muted" style="margin-top:4px">Change your password</div>
+
+        <div id="passMsg" style="margin-top:10px"></div>
+
+        <label for="currentPassword">Current Password</label>
+        <input id="currentPassword" type="password" autocomplete="current-password" />
+
+        <label for="newPassword">New Password</label>
+        <input id="newPassword" type="password" autocomplete="new-password" />
+
+        <div class="hr"></div>
+        <button id="changePassword" class="btn">Change Password</button>
+
+        <div class="hr"></div>
+        <h3 style="margin:0">Danger Zone</h3>
+        <div class="muted" style="margin-top:4px">Delete your account permanently</div>
+
+        <div id="delMsg" style="margin-top:10px"></div>
+
+        <label for="deletePassword">Confirm Password</label>
+        <input id="deletePassword" type="password" autocomplete="current-password" />
+
+        <div class="hr"></div>
+        <button id="deleteAccount" class="btn danger">Delete Account</button>
+      </div>
+
+      <div class="card" id="orders" style="grid-column:1/-1">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;">
+          <div>
+            <h3 style="margin:0">Order History</h3>
+            <div class="muted" style="margin-top:4px">Your previous orders</div>
+          </div>
+          <button id="refreshOrders" class="btn secondary">Refresh</button>
+        </div>
+
+        <div id="ordersMsg" style="margin-top:10px"></div>
+
+        <div style="margin-top:10px" class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="orders"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="inner card">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+        <h3 style="margin:0">Order Details</h3>
+        <button id="close" class="btn secondary">Close</button>
+      </div>
+      <div id="details" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+<script src="/account-inline.js" defer></script>
+</body>
+</html>

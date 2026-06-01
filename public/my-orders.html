@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Orders</title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .wrap{max-width:1000px;margin:24px auto;padding:0 14px;}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .muted{color:#666}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;}
+    th,td{padding:12px 10px;border-bottom:1px solid #eee;text-align:left;font-size:14px;}
+    th{background:#f6f7fb;font-weight:700;}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#243b8a;font-weight:700;font-size:12px;}
+    .card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 10px 20px rgba(0,0,0,.06);}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;border:1px solid #ddd;background:#071a3d;color:#fff;text-decoration:none;font-weight:700;cursor:pointer;}
+    .btn.secondary{background:#fff;color:#071a3d;}
+    .row-actions{display:flex;gap:8px;align-items:center;}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px;}
+    .modal .inner{max-width:720px;width:100%;}
+    ul{margin:8px 0 0 18px;}
+    .err{color:#b00020;font-weight:700;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h2 style="margin:0">My Orders</h2>
+        <div class="muted">View your order details and items</div>
+      </div>
+      <div class="row-actions">
+        <a class="btn secondary" href="/">Home</a>
+        <button id="logout" class="btn secondary">Logout</button>
+      </div>
+    </div>
+
+    <div id="status" class="card" style="margin:14px 0;"></div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="orders"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="inner card">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+        <h3 style="margin:0">Order Details</h3>
+        <button id="close" class="btn secondary">Close</button>
+      </div>
+      <div id="details" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+<script>
+  const statusEl = document.getElementById('status');
+  const tbody = document.getElementById('orders');
+  const modal = document.getElementById('modal');
+  const details = document.getElementById('details');
+
+  function esc(s){
+    return String(s ?? '').replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  async function getMe(){
+    const res = await fetch('/api/auth/me');
+    if (!res.ok) throw new Error('Please login to view your orders.');
+    return res.json();
+  }
+
+  async function loadOrders(me){
+    const qs = new URLSearchParams();
+    if (me.email) qs.set('email', me.email);
+    if (me.phone) qs.set('phone', me.phone);
+
+    const res = await fetch('/api/my/orders?' + qs.toString());
+    if (!res.ok) throw new Error('Unable to load orders');
+    return res.json();
+  }
+
+  function renderRows(list){
+    tbody.innerHTML = '';
+    if (!Array.isArray(list) || list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="muted">No orders found.</td></tr>';
+      return;
+    }
+
+    list.forEach(o => {
+      const id = o.orderId ?? o.id ?? '';
+      const dateVal = o.orderDate ?? o.createdAt ?? o.created ?? '';
+      const status = o.orderStatus ?? o.status ?? 'New';
+      const total = o.totalAmount ?? o.amount ?? 0;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${esc(id || '-')}</td>
+        <td>${dateVal ? esc(new Date(dateVal).toLocaleString()) : '-'}</td>
+        <td>AED ${Number(total || 0).toFixed(2)}</td>
+        <td><span class="badge">${esc(status)}</span></td>
+        <td><button class="btn secondary" data-id="${esc(id)}">View</button></td>
+      `;
+      tr.querySelector('button').addEventListener('click', () => openOrder(me, id));
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function openOrder(me, id){
+    const qs = new URLSearchParams();
+    if (me.email) qs.set('email', me.email);
+    if (me.phone) qs.set('phone', me.phone);
+
+    const res = await fetch('/api/my/orders/' + encodeURIComponent(id) + '?' + qs.toString());
+    if (!res.ok) {
+      details.innerHTML = '<div class="err">Unable to load order details</div>';
+      modal.style.display = 'flex';
+      return;
+    }
+    const o = await res.json();
+
+    const idVal = o.orderId ?? o.id ?? '';
+    const dateVal = o.orderDate ?? o.createdAt ?? o.created ?? '';
+    const status = o.orderStatus ?? o.status ?? 'New';
+    const total = o.totalAmount ?? o.amount ?? 0;
+
+    const addr = o.address || {};
+    const addressText = [addr.building, addr.street, addr.area, addr.city, addr.country].filter(Boolean).join(', ');
+
+    const items = Array.isArray(o.items) ? o.items : [];
+    const itemsHtml = items.map(i => {
+      const name = i.productName ?? i.name ?? '';
+      const pn = i.partNumber ? ` (${i.partNumber})` : '';
+      const qty = Number(i.quantity || 0);
+      const price = Number(i.price || 0);
+      return `<li>${esc(name)}${esc(pn)} x ${qty} - AED ${price.toFixed(2)}</li>`;
+    }).join('');
+
+    details.innerHTML = `
+      <div><strong>Order:</strong> ${esc(idVal || '-')}</div>
+      <div><strong>Date:</strong> ${dateVal ? esc(new Date(dateVal).toLocaleString()) : '-'}</div>
+      <div><strong>Status:</strong> ${esc(status)}</div>
+      <div style="margin-top:8px"><strong>Delivery Address:</strong> ${esc(addressText || '-')}</div>
+      <hr />
+      <div><strong>Items</strong></div>
+      <ul>${itemsHtml || '<li>-</li>'}</ul>
+      <div style="margin-top:8px"><strong>Total:</strong> AED ${Number(total || 0).toFixed(2)}</div>
+    `;
+
+    modal.style.display = 'flex';
+  }
+
+  document.getElementById('close').addEventListener('click', () => modal.style.display = 'none');
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+  document.getElementById('logout').addEventListener('click', async () => {
+    try { await fetch('/api/auth/logout', { method:'POST' }); } catch {}
+    window.location.href = '/login.html';
+  });
+
+  (async function init(){
+    try {
+      statusEl.textContent = 'Loading...';
+      const me = await getMe();
+      statusEl.innerHTML = `Logged in as <strong>${esc(me.name || me.email || 'Customer')}</strong> (${esc(me.email || '-')})`;
+      const orders = await loadOrders(me);
+      renderRows(orders);
+    } catch (e) {
+      statusEl.innerHTML = `<div class="err">${esc(e.message || 'Please login')}</div><div class="muted" style="margin-top:6px">Redirecting to login...</div>`;
+      setTimeout(() => window.location.href = '/login.html', 1200);
+    }
+  })();
+</script>
+</body>
+</html>

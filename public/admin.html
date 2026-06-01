@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JIEDIZHEN Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/jpeg" href="/images/jdz-logo.jpeg">
+
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+
+<header class="admin-header">
+  <div class="admin-header-left">
+    <img src="/images/jdz-logo.jpeg" alt="JIEDIZHEN logo">
+    <h1>JIEDIZHEN Admin</h1>
+  </div>
+
+  <div class="admin-actions">
+    <button id="theme-toggle" class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme"></button>
+    <button id="logout-btn" class="logout-btn" type="button">Logout</button>
+  </div>
+</header>
+
+<main class="admin-container">
+
+  <h2>Add Product</h2>
+
+  <form id="add-form" enctype="multipart/form-data">
+    <input id="product-name" placeholder="Product name" required>
+    <input id="product-part-number" placeholder="Part number" required>
+    <input id="product-price" type="number" placeholder="Price" required>
+
+    <select id="product-category" required>
+      <option value="">Select category</option>
+      <option>Engine</option>
+      <option>Brakes</option>
+      <option>Suspension</option>
+    </select>
+
+    <img id="add-preview" style="width:120px;display:none;margin:10px 0;border-radius:8px" alt="Preview">
+    <input id="product-image" type="file" accept="image/*">
+
+    <label><input type="checkbox" id="remove-add-image"> Remove image</label>
+    <input id="product-vehicles" placeholder="Vehicles comma separated">
+
+    <!-- Stock management (qty-based) -->
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; align-items:center;">
+      <input id="product-stock-qty" type="number" min="0" step="1" placeholder="Stock Qty" value="0">
+      <input id="product-low-stock" type="number" min="0" step="1" placeholder="Low Stock Threshold" value="5">
+    </div>
+
+    <button type="submit">Add Product</button>
+  </form>
+
+  <h2>Existing Products</h2>
+
+  <div class="order-toolbar" style="margin-bottom:10px;">
+    <input id="product-search" placeholder="Search products">
+
+    <select id="product-page-size">
+      <option value="10">10 per page</option>
+      <option value="25" selected>25 per page</option>
+      <option value="50">50 per page</option>
+      <option value="100">100 per page</option>
+    </select>
+
+    <button type="button" id="export-stock-csv">Download Stock (Excel CSV)</button>
+
+    <div class="pagination-controls" style="margin-left:auto;">
+      <button type="button" id="products-prev">Previous</button>
+      <span id="products-page-indicator">Page 1</span>
+      <button type="button" id="products-next">Next</button>
+    </div>
+  </div>
+
+  <div id="product-list"></div>
+
+  <div class="pagination-bar" style="margin-top:10px;">
+    <div style="opacity:.8;">Showing <span id="products-count">0</span> products</div>
+  </div>
+
+  <h2>Enquiries / Quotes</h2>
+
+  <div class="order-toolbar" style="margin-bottom:10px;">
+    <input id="enquiry-search" placeholder="Search enquiries">
+
+    <select id="enquiry-filter">
+      <option value="">All statuses</option>
+      <option>New</option>
+      <option>Contacted</option>
+      <option>Quoted</option>
+      <option>Closed</option>
+    </select>
+
+    <select id="enquiry-bulk-status">
+      <option value="">Bulk status</option>
+      <option>Contacted</option>
+      <option>Quoted</option>
+      <option>Closed</option>
+    </select>
+
+    <button type="button" id="enquiry-bulk-apply">Apply</button>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Ref</th>
+        <th>Customer</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Vehicle</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="enquiries-table-body"></tbody>
+  </table>
+
+  <div id="enquiry-modal" class="modal hidden">
+    <div class="modal-content">
+      <button type="button" id="enquiry-modal-close">Close</button>
+      <div id="enquiry-modal-body"></div>
+    </div>
+  </div>
+
+  <h2>Orders</h2>
+
+  <div class="order-toolbar">
+    <input id="order-search" placeholder="Search orders">
+
+    <select id="order-filter">
+      <option value="">All statuses</option>
+      <option>pending</option>
+      <option>processing</option>
+      <option>shipped</option>
+      <option>completed</option>
+      <option>cancelled</option>
+    </select>
+
+    <select id="bulk-status">
+      <option value="">Bulk status</option>
+      <option>processing</option>
+      <option>shipped</option>
+      <option>completed</option>
+      <option>cancelled</option>
+    </select>
+
+    <button type="button" id="orders-bulk-apply">Apply</button>
+    <button type="button" id="orders-export-csv">Export CSV</button>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Phone</th>
+        <th>Location</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="orders-table-body"></tbody>
+  </table>
+
+  <div class="pagination-bar">
+    <div>
+      <select id="page-size">
+        <option value="10">10 per page</option>
+        <option value="25">25 per page</option>
+        <option value="50">50 per page</option>
+      </select>
+    </div>
+
+    <div class="pagination-controls">
+      <button type="button" id="orders-prev">Previous</button>
+      <span id="page-indicator">Page 1</span>
+      <button type="button" id="orders-next">Next</button>
+    </div>
+  </div>
+
+</main>
+
+<div id="order-modal" class="modal hidden">
+  <div class="modal-content">
+    <button type="button" id="order-modal-close">Close</button>
+    <div id="order-modal-body"></div>
+
+    <hr>
+    <h3 style="margin:10px 0 6px;">Tracking</h3>
+    <div style="display:grid; gap:10px;">
+      <input id="track-carrier" placeholder="Carrier (e.g. Aramex, DHL)">
+      <input id="track-number" placeholder="Tracking number">
+      <input id="track-url" placeholder="Tracking URL (optional)">
+      <button id="save-tracking-btn" type="button">Save tracking</button>
+      <div id="track-msg" style="opacity:.9"></div>
+    </div>
+  </div>
+</div>
+
+<div id="edit-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn" id="close-edit">&times;</span>
+    <h3>Edit Product</h3>
+
+    <input id="edit-name" placeholder="Product name">
+    <input id="edit-part-number" placeholder="Part number">
+    <input id="edit-price" type="number" placeholder="Price">
+
+    <select id="edit-category">
+      <option>Engine</option>
+      <option>Brakes</option>
+      <option>Suspension</option>
+    </select>
+
+    <input id="edit-vehicles" placeholder="Vehicles comma separated">
+
+    <!-- Stock management (qty-based) -->
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; align-items:center; margin-top:10px;">
+      <input id="edit-stock-qty" type="number" min="0" step="1" placeholder="Stock Qty">
+      <input id="edit-low-stock" type="number" min="0" step="1" placeholder="Low Stock Threshold">
+    </div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+      <button type="button" data-adjust-stock="-5">-5</button>
+      <button type="button" data-adjust-stock="-1">-1</button>
+      <button type="button" data-adjust-stock="1">+1</button>
+      <button type="button" data-adjust-stock="5">+5</button>
+      <button type="button" data-set-stock="0">Set 0</button>
+    </div>
+
+    <img id="edit-preview" style="width:120px;margin:10px auto;border-radius:8px" alt="Preview">
+    <input id="edit-image" type="file" accept="image/*">
+    <label><input type="checkbox" id="remove-edit-image"> Remove image</label>
+
+    <button id="save-edit" type="button">Save Changes</button>
+  </div>
+</div>
+
+<!-- Scripts: only include files that exist. DO NOT include missing auth-ui.js -->
+<script src="/theme.js" defer></script>
+<script src="/admin.js" defer></script>
+
+<script src="/admin-inline.js" defer></script>
+</body>
+</html>

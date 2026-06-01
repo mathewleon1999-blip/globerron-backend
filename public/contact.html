@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Contact | JIEDIZHEN</title>
+  <meta name="description" content="Contact JIEDIZHEN Auto Spare Parts Trading — phone, email, location, and social media links." />
+
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/theme.js" defer></script>
+
+  <style>
+    .contact-wrap{
+      max-width: 1100px;
+      margin: 26px auto 60px;
+      padding: 0 16px;
+    }
+
+    .contact-hero{
+      padding: 18px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 191, 255, 0.22);
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 45px rgba(2,6,23,0.12);
+    }
+
+    body.dark .contact-hero{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(148, 191, 255, 0.16);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.45);
+    }
+
+    .contact-title{
+      margin: 0;
+      font-weight: 950;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: clamp(22px, 2.4vw, 32px);
+    }
+
+    .contact-sub{
+      margin: 8px 0 0;
+      opacity: .85;
+      max-width: 70ch;
+      line-height: 1.6;
+    }
+
+    .contact-grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    @media (min-width: 960px){
+      .contact-grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .card{
+      border-radius: 18px;
+      border: 1px solid rgba(148, 191, 255, 0.22);
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 18px 45px rgba(2,6,23,0.12);
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    body.dark .card{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(148, 191, 255, 0.16);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.45);
+    }
+
+    .k{
+      font-weight: 950;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      font-size: 12px;
+      opacity: .85;
+      margin-bottom: 10px;
+    }
+
+    .list{
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .item{
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 191, 255, 0.16);
+      background: rgba(255,255,255,0.55);
+    }
+
+    body.dark .item{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(148, 191, 255, 0.12);
+    }
+
+    .icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 950;
+      background: linear-gradient(135deg, rgba(30, 94, 255, 0.95), rgba(0, 163, 255, 0.95));
+      color: #061427;
+      flex: 0 0 auto;
+    }
+
+    .val{
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .val a{ color: inherit; }
+
+    .actions{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 950;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.95), rgba(99, 102, 241, 0.95));
+      color: #081226;
+      border: 1px solid rgba(56,189,248,0.35);
+      box-shadow: 0 18px 45px rgba(56,189,248,0.25);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      white-space: nowrap;
+    }
+
+    .pill.secondary{
+      background: rgba(255,255,255,0.55);
+      color: inherit;
+      border: 1px solid rgba(148, 191, 255, 0.22);
+      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.12);
+    }
+
+    body.dark .pill.secondary{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(148, 191, 255, 0.16);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.45);
+    }
+
+    .pill:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 24px 60px rgba(56,189,248,0.45);
+      filter: brightness(1.02);
+    }
+
+    .pill.secondary:hover{
+      box-shadow: 0 18px 45px rgba(2,6,23,0.18);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .pill{ transition: none !important; }
+      .pill:hover{ transform: none; }
+    }
+
+    iframe{
+      width: 100%;
+      height: 320px;
+      border: 0;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.20);
+    }
+
+    body.dark iframe{ background: rgba(255,255,255,0.06); }
+
+    .note{
+      margin-top: 10px;
+      opacity: .85;
+      line-height: 1.6;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .topbar a{
+      text-decoration:none;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      opacity: .9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contact-wrap">
+
+    <div class="topbar">
+      <a href="/">← Back to Home</a>
+      <a href="/account.html">My Account</a>
+    </div>
+
+    <section class="contact-hero">
+      <h1 class="contact-title">Contact</h1>
+      <p class="contact-sub">Reach JIEDIZHEN Auto Spare Parts Trading via phone, WhatsApp, email, or social media. We respond fast during business hours.</p>
+
+      <div class="actions">
+        <a class="pill" href="https://wa.me/971586852620" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="pill secondary" href="tel:+971586852620">Call</a>
+        <a class="pill secondary" href="mailto:sales@jiedizhen.com">Email</a>
+      </div>
+    </section>
+
+    <section class="contact-grid">
+      <div class="card">
+        <div class="k">Contact details</div>
+        <ul class="list">
+          <li class="item">
+            <span class="icon">☎</span>
+            <div class="val">
+              <div><strong>Phone</strong></div>
+              <div><a href="tel:+971586852620">+971 58 685 2620</a></div>
+            </div>
+          </li>
+          <li class="item">
+            <span class="icon">✉</span>
+            <div class="val">
+              <div><strong>Email</strong></div>
+              <div><a href="mailto:sales@jiedizhen.com">sales@jiedizhen.com</a></div>
+            </div>
+          </li>
+          <li class="item">
+            <span class="icon">⏰</span>
+            <div class="val">
+              <div><strong>Business hours</strong></div>
+              <div>Mon–Sat, 9:00 AM – 7:00 PM</div>
+            </div>
+          </li>
+          <li class="item">
+            <span class="icon">📍</span>
+            <div class="val">
+              <div><strong>Location</strong></div>
+              <div>
+                <a href="https://maps.app.goo.gl/D4MEnbqE7VhKmp8B9" target="_blank" rel="noopener">Open in Google Maps</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <p class="note">Tip: For the fastest compatibility check, send your vehicle details + part number on WhatsApp.</p>
+      </div>
+
+      <div class="card">
+        <div class="k">Social media</div>
+        <ul class="list">
+          <li class="item">
+            <span class="icon">▶</span>
+            <div class="val">
+              <div><strong>TikTok</strong></div>
+              <div><a href="#" target="_blank" rel="noopener">Add your TikTok link</a></div>
+            </div>
+          </li>
+          <li class="item">
+            <span class="icon">f</span>
+            <div class="val">
+              <div><strong>Facebook</strong></div>
+              <div><a href="https://www.facebook.com/share/1CQ3zvjH9N/" target="_blank" rel="noopener">Visit our Facebook</a></div>
+            </div>
+          </li>
+          <li class="item">
+            <span class="icon">◎</span>
+            <div class="val">
+              <div><strong>Instagram</strong></div>
+              <div><a href="https://www.instagram.com/jdz_auto_spare_parts?igsh=enZ6bHgwZTF4aXNq" target="_blank" rel="noopener">Visit our Instagram</a></div>
+            </div>
+          </li>
+        </ul>
+
+        <div class="hr" style="height:1px;background:rgba(148, 191, 255, 0.22);margin:14px 0;"></div>
+
+        <div class="k">Map</div>
+        <iframe
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=25.271472,55.312194&hl=en&z=16&output=embed"
+          title="JIEDIZHEN location map"
+        ></iframe>
+        <p class="note">If you want the map to point to your exact location, provide your Google Maps coordinates and I will update this embed.</p>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>

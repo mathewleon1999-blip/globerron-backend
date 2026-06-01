@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us | JIEDIZHEN</title>
+  <meta name="description" content="Learn about JIEDIZHEN Auto Spare Parts Trading — UAE based supplier focused on correct fitment, reliable sourcing, and straightforward support." />
+  <link rel="stylesheet" href="/style.css">
+  <script src="/theme.js" defer></script>
+  <script defer src="script.js"></script>
+
+  <style>
+    /* Page-only polish (kept local to avoid affecting other pages) */
+    /* About page theme overrides were hardcoded dark.
+       Switch to global theme tokens so the toggle controls this page too.
+    */
+    :root{
+      --about-radius: 18px;
+    }
+
+    body{
+      /* Let global light/dark thunder-blue stage show through */
+      color: var(--text);
+    }
+
+    .site-header{
+      position: sticky;
+      top: 0;
+      z-index: 5000;
+      backdrop-filter: saturate(var(--glass-sat)) blur(var(--glass-blur));
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--surface) 84%, #ffffff),
+        color-mix(in srgb, var(--surface-2) 84%, #ffffff)
+      );
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      box-shadow: 0 18px 45px rgba(2, 6, 23, 0.18);
+    }
+
+    /* Ensure header actions match global theme on About page */
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-actions a,
+    .header-actions button{
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* Login link styled like a button (theme-aware) */
+    #auth-login{
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--text);
+      text-decoration: none;
+      background: color-mix(in srgb, var(--surface) 78%, #ffffff);
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
+      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.18);
+    }
+    #auth-login:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
+      background: color-mix(in srgb, var(--surface-2) 82%, #ffffff);
+    }
+
+    /* Logout button aligned with login */
+    #auth-logout{
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface) 78%, #ffffff);
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      color: var(--text);
+      cursor: pointer;
+      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.18);
+    }
+
+    /* Enquiry cart button consistent sizing + pill shape */
+    #cart-btn{
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #0b1220;
+      cursor: pointer;
+    }
+
+    #cart-btn:hover{ filter: brightness(1.02); }
+
+    .about-page{
+      max-width: 1100px;
+      padding-top: 28px;
+      padding-bottom: 48px;
+    }
+
+    .about-hero{
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+      padding: 26px;
+      border-radius: var(--about-radius);
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--surface) 86%, #ffffff),
+        color-mix(in srgb, var(--surface-2) 76%, #ffffff)
+      );
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      box-shadow: 0 26px 80px rgba(2, 6, 23, 0.18);
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 18px;
+      backdrop-filter: saturate(var(--glass-sat)) blur(calc(var(--glass-blur) - 6px));
+    }
+
+    .about-hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(650px 280px at 15% 20%, rgba(30, 94, 255, 0.18), transparent 60%),
+        radial-gradient(650px 280px at 85% 25%, rgba(0, 163, 255, 0.14), transparent 60%);
+      pointer-events:none;
+    }
+
+    .about-hero > *{ position: relative; }
+
+    .about-title{
+      font-size: clamp(28px, 3.2vw, 40px);
+      line-height: 1.12;
+      margin: 0 0 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .about-subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 62ch;
+    }
+
+    .about-badges{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface) 82%, #ffffff);
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      color: var(--text);
+      font-size: 13px;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16);
+    }
+
+    .badge-dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+    }
+
+    .badge-dot.ok{
+      background: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+
+    .about-card{
+      padding: 18px;
+      border-radius: var(--about-radius);
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--surface) 84%, #ffffff),
+        color-mix(in srgb, var(--surface-2) 74%, #ffffff)
+      );
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      box-shadow: 0 18px 60px rgba(2, 6, 23, 0.16);
+      backdrop-filter: saturate(var(--glass-sat)) blur(calc(var(--glass-blur) - 8px));
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat{
+      padding: 14px;
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--surface) 82%, #ffffff);
+      border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+
+    .stat .k{
+      display:block;
+      font-size: 18px;
+      font-weight: 850;
+      letter-spacing: 0.2px;
+      color: var(--text);
+    }
+
+    .stat .v{
+      display:block;
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .section-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .section-grid section{
+      margin: 0;
+    }
+
+    .about-page h3{
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 18px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      font-weight: 950;
+    }
+
+    .about-page p{
+      color: var(--muted-2);
+      line-height: 1.7;
+    }
+
+    .offer-list{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted-2);
+    }
+
+    .offer-list li{ margin: 8px 0; }
+
+    .trust-line{
+      margin: 0;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: var(--text);
+      background: linear-gradient(90deg, rgba(30, 94, 255, 0.16), rgba(0, 163, 255, 0.10));
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+    }
+
+    .contact-box{ margin-top: 18px; }
+
+    .cta-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 950;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      box-shadow: 0 18px 46px rgba(2, 6, 23, 0.20);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #061427;
+      border: 1px solid transparent;
+    }
+
+    .cta-btn:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .cta-btn:active{ transform: translateY(0px); box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
+
+    .cta-btn:focus-visible,
+    .header-nav a:focus-visible,
+    #cart-btn:focus-visible,
+    #auth-login:focus-visible,
+    #auth-logout:focus-visible{
+      outline: none;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 40%, transparent), 0 18px 46px rgba(2, 6, 23, 0.25);
+      border-radius: 12px;
+    }
+
+    @media (max-width: 900px){
+      .about-hero{ grid-template-columns: 1fr; }
+      .section-grid{ grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px){
+      .stats{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+
+    <div class="header-brand">
+      <h1>JIEDIZHEN</h1>
+      <p>Auto Spare Parts Trading</p>
+    </div>
+
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About Us</a>
+      <a href="index.html#products">Products</a>
+    </nav>
+
+    <div class="header-actions">
+      <div id="auth-controls" style="display:inline-flex;align-items:center;gap:10px;margin-right:12px;">
+        <span id="auth-user" style="display:none;font-size:14px;">Hello</span>
+        <a id="auth-login" href="/login.html" style="display:inline-block;">Login</a>
+        <button id="auth-logout" type="button" style="display:none;">Logout</button>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<main class="container about-page">
+
+  <section class="about-hero" aria-label="About JIEDIZHEN">
+    <div>
+      <h2 class="about-title">About JIEDIZHEN</h2>
+      <p class="about-subtitle">
+        JIEDIZHEN Auto Spare Parts Trading is a UAE based supplier focused on correct fitment,
+        dependable sourcing, and straightforward customer support.
+      </p>
+
+      <div class="about-badges" aria-label="Key highlights">
+        <span class="badge"><span class="badge-dot"></span>Verified fitment support</span>
+        <span class="badge"><span class="badge-dot ok"></span>UAE based supply</span>
+        <span class="badge"><span class="badge-dot"></span>Fast enquiries</span>
+      </div>
+    </div>
+
+    <aside class="about-card" aria-label="Company snapshot">
+      <div class="stats">
+        <div class="stat"><span class="k">Compatibility-first</span><span class="v">Part numbers checked before shipping</span></div>
+        <div class="stat"><span class="k">Clear communication</span><span class="v">Availability and timelines upfront</span></div>
+        <div class="stat"><span class="k">Quality sourcing</span><span class="v">Dependable suppliers and traceability</span></div>
+        <div class="stat"><span class="k">After-sales support</span><span class="v">Help beyond the transaction</span></div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="section-grid" aria-label="Company details">
+
+    <section class="about-card">
+      <h3>Our Story</h3>
+      <p>
+        Jiangxi JDZ Auto Parts Co., Ltd. is one of China’s leading manufacturers of automotive shock absorbers,
+        specializing in the research, development, and production of high‑quality suspension components.
+        With a national‑level laboratory and fully automated production lines, our products are widely used
+        across many vehicle brands and high‑end automotive air suspension systems.
+      </p>
+      <p>
+        Established in November 2017, the company has a registered capital of 20 million RMB,
+        fixed assets of 80 million RMB, and covers an area of more than 20,000 square meters.
+        It is a key project of the Jingdezhen High‑Tech Zone.
+      </p>
+      <p>
+        Our factory includes an office building, laboratory building, scientific research expert building,
+        pipe machining workshop, welding assembly workshop, painting and packaging workshop,
+        raw material warehouse, finished product warehouse, dormitory building, and canteen —
+        supported by professional equipment and facilities.
+      </p>
+      <p>
+        We place strong emphasis on R&D innovation and quality control. JDZ currently holds 8 utility model patents,
+        has been recognized as a high‑tech enterprise, and has passed the TS16949 quality management system certification.
+      </p>
+      <p>
+        With an annual output of 3.6 million automotive shock absorbers and related parts, around 80% of our products
+        are exported globally. We are committed to becoming a trusted supplier for domestic OEMs and the international
+        aftermarket.
+      </p>
+      <p>
+        Looking ahead, JDZ is developing towards the R&D and production of aviation accessories and high‑speed rail
+        shock absorbers. We are determined to become a global manufacturer and supplier of aircraft shock absorbers,
+        aircraft landing gear, aircraft seat shock absorbers, and locomotive and vehicle hydraulic shock absorbers.
+      </p>
+    </section>
+
+    <section class="about-card">
+      <h3>Industry Experience</h3>
+      <p>
+        Our team brings hands-on experience in parts sourcing, vehicle compatibility validation,
+        and workshop-level support.
+      </p>
+      <p>
+        That expertise helps customers avoid guesswork and make confident decisions — even when comparing options.
+      </p>
+    </section>
+
+    <section class="about-card">
+      <h3>What We Offer</h3>
+      <ul class="offer-list">
+        <li>Engine, brake, and suspension components</li>
+        <li>Verified part numbers and vehicle compatibility</li>
+        <li>Transparent pricing with no hidden charges</li>
+        <li>Fast WhatsApp-based enquiries and support</li>
+        <li>Local UAE-based supply and assistance</li>
+      </ul>
+    </section>
+
+    <section class="about-card">
+      <h3>Why Choose JDZ</h3>
+      <p class="trust-line">Correct fitment. Reliable sourcing. Straightforward support.</p>
+      <p>
+        JDZ is built for customers who value accuracy, speed, and accountability when sourcing automotive parts.
+      </p>
+    </section>
+
+  </section>
+
+  <section class="about-card" aria-label="Team">
+    <h3 style="text-align:center;">Team of Professionals</h3>
+
+    <div class="team-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:18px;margin-top:18px;align-items:stretch;">
+
+      <article class="team-card" style="padding:18px;border-radius:18px;background:color-mix(in srgb, var(--surface) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 18px 60px rgba(2, 6, 23, 0.10);text-align:center;display:flex;flex-direction:column;">
+        <div style="width:100%;height:240px;border-radius:14px;overflow:hidden;background:color-mix(in srgb, var(--surface-2) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);display:flex;align-items:center;justify-content:center;">
+          <img src="/images/team-liqin-feng.jpg" alt="Liqin feng" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" loading="lazy" />
+        </div>
+        <h4 style="margin:14px 0 6px;font-size:24px;letter-spacing:.2px;">Liqin feng</h4>
+        <div style="color:#1e40ff;font-weight:700;margin-bottom:10px;">Managing Director</div>
+        <p style="margin:0;color:var(--muted-2);line-height:1.7;">
+          Our mission is your satisfaction.With a commitment to excellence and quality service, we strive to exceed your expectations every time.Our dedicated team ensures you find the right spare parts with ease,offering reliability and expertise that you can trust.Choose us for a seamless experience and let us be your partner on the road to Success.
+        </p>
+      </article>
+
+      <article class="team-card" style="padding:18px;border-radius:18px;background:color-mix(in srgb, var(--surface) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 18px 60px rgba(2, 6, 23, 0.10);text-align:center;display:flex;flex-direction:column;">
+        <div style="width:100%;height:240px;border-radius:14px;overflow:hidden;background:color-mix(in srgb, var(--surface-2) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);display:flex;align-items:center;justify-content:center;">
+          <img src="/images/team-shaohua-gong.jpg" alt="Shaohua Gong" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" loading="lazy" />
+        </div>
+        <h4 style="margin:14px 0 6px;font-size:24px;letter-spacing:.2px;">Shaohua Gong</h4>
+        <div style="color:#1e40ff;font-weight:700;margin-bottom:10px;">CEO and Founder</div>
+        <p style="margin:0;color:var(--muted-2);line-height:1.7;">
+          Our top-quality products and dedicated team are here to meet all your automotive needs. Your satisfaction is our priority,and we look forward to serving you with the best spare parts for your vehicles.
+        </p>
+      </article>
+
+      <article class="team-card" style="padding:18px;border-radius:18px;background:color-mix(in srgb, var(--surface) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 18px 60px rgba(2, 6, 23, 0.10);text-align:center;display:flex;flex-direction:column;">
+        <div style="width:100%;height:240px;border-radius:14px;overflow:hidden;background:color-mix(in srgb, var(--surface-2) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);display:flex;align-items:center;justify-content:center;">
+          <img src="/images/team-shengjin-qi.jpg" alt="Shengjin Qi" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" loading="lazy" />
+        </div>
+        <h4 style="margin:14px 0 6px;font-size:24px;letter-spacing:.2px;">Shengjin Qi</h4>
+        <div style="color:#1e40ff;font-weight:700;margin-bottom:10px;">Chief Engineer</div>
+        <p style="margin:0;color:var(--muted-2);line-height:1.7;">
+          Overall responsible for the production management of the company's products ,Lead new product development projects, Organize and carry out research and application of new technologies.
+        </p>
+      </article>
+
+      <article class="team-card" style="padding:18px;border-radius:18px;background:color-mix(in srgb, var(--surface) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);box-shadow:0 18px 60px rgba(2, 6, 23, 0.10);text-align:center;display:flex;flex-direction:column;">
+        <div style="width:100%;height:240px;border-radius:14px;overflow:hidden;background:color-mix(in srgb, var(--surface-2) 82%, #ffffff);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);display:flex;align-items:center;justify-content:center;">
+          <img src="/images/team-mengxiang-wang.jpg" alt="Mengxiang Wang" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" loading="lazy" />
+        </div>
+        <h4 style="margin:14px 0 6px;font-size:24px;letter-spacing:.2px;">Mengxiang Wang</h4>
+        <div style="color:#1e40ff;font-weight:700;margin-bottom:10px;">Chief Technology Officer</div>
+        <p style="margin:0;color:var(--muted-2);line-height:1.7;">
+          Responsible for the production management of air suspension systems. Organize and carry out research and application of new technologies.
+        </p>
+      </article>
+
+    </div>
+
+    <style>
+      @media (max-width: 1100px){
+        .team-grid{ grid-template-columns: repeat(2, 1fr) !important; }
+      }
+      @media (max-width: 560px){
+        .team-grid{ grid-template-columns: 1fr !important; }
+      }
+    </style>
+  </section>
+
+  <section class="about-card" aria-label="Certifications">
+    <h3 style="text-align:center;">Our certification</h3>
+
+    <div class="cert-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;margin-top:16px;align-items:stretch;">
+      <a class="cert-item" href="/images/certifications/cert-01.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-01.jpg" alt="Certification 1" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+      <a class="cert-item" href="/images/certifications/cert-02.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-02.jpg" alt="Certification 2" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+      <a class="cert-item" href="/images/certifications/cert-03.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-03.jpg" alt="Certification 3" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+      <a class="cert-item" href="/images/certifications/cert-04.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-04.jpg" alt="Certification 4" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+      <a class="cert-item" href="/images/certifications/cert-05.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-05.jpg" alt="Certification 5" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+      <a class="cert-item" href="/images/certifications/cert-06.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-06.jpg" alt="Certification 6" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+      <a class="cert-item" href="/images/certifications/cert-07.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-07.jpg" alt="Certification 7" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+      <a class="cert-item" href="/images/certifications/cert-08.jpg" target="_blank" rel="noopener" style="display:block;border-radius:14px;overflow:hidden;border:1px solid color-mix(in srgb, var(--border) 85%, transparent);background:rgba(255,255,255,0.92);">
+        <img src="/images/certifications/cert-08.jpg" alt="Certification 8" style="width:100%;height:220px;object-fit:cover;display:block;" loading="lazy" />
+      </a>
+    </div>
+
+    <style>
+      @media (max-width: 1100px){
+        .cert-grid{ grid-template-columns: repeat(3, 1fr) !important; }
+      }
+      @media (max-width: 720px){
+        .cert-grid{ grid-template-columns: repeat(2, 1fr) !important; }
+      }
+      @media (max-width: 420px){
+        .cert-grid{ grid-template-columns: 1fr !important; }
+        .cert-item img{ height: 240px !important; object-fit:contain !important; background:#fff; }
+      }
+    </style>
+  </section>
+
+  <section class="about-card" aria-label="Brands we serve">
+    <h3 style="text-align:center;">Brands we serve</h3>
+    <p style="text-align:center;max-width:85ch;margin:0 auto 18px;color:var(--muted-2);line-height:1.7;">
+      We are a professional manufacturer specializing in high-quality shock absorbers and air suspension systems,
+      specifically engineered to fit premium automotive brands including BMW, Mercedes-Benz, Audi, Land Rover, Jaguar, and Porsche.
+    </p>
+
+    <div class="brands-grid" style="display:grid;grid-template-columns:repeat(6, 1fr);gap:18px;align-items:center;">
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/bmw.png" alt="BMW" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/mercedes.png" alt="Mercedes-Benz" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/audi.png" alt="Audi" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/land-rover.png" alt="Land Rover" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/jaguar.png" alt="Jaguar" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/porsche.png" alt="Porsche" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/volkswagen.png" alt="Volkswagen" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/toyota.png" alt="Toyota" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/mitsubishi.png" alt="Mitsubishi" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/hyundai.png" alt="Hyundai" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/kia.png" alt="Kia" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/nissan.png" alt="Nissan" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/lexus.png" alt="Lexus" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/mazda.png" alt="Mazda" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/honda.png" alt="Honda" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/bentley.png" alt="Bentley" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/rolls-royce.png" alt="Rolls Royce" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/jeep.png" alt="Jeep" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/volvo.png" alt="Volvo" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/tesla.png" alt="Tesla" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/cadillac.png" alt="Cadillac" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/citroen.png" alt="Citroën" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.92);border:1px solid rgba(255,255,255,0.20);box-shadow:inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 30px rgba(2,6,23,0.12);">
+        <img src="/images/brands/chevrolet.png" alt="Chevrolet" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(2,6,23,0.18));" loading="lazy" />
+      </div>
+      <div class="brand" style="display:flex;align-items:center;justify-content:center;height:96px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px dashed rgba(255,255,255,0.18);box-shadow:inset 0 1px 0 rgba(255,255,255,0.10);">
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,0.72);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:12px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:999px;border:1px solid rgba(255,255,255,0.22);">+</span>
+          <span>More</span>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @media (max-width: 1100px){
+        .brands-grid{ grid-template-columns: repeat(4, 1fr) !important; }
+      }
+      @media (max-width: 720px){
+        .brands-grid{ grid-template-columns: repeat(3, 1fr) !important; }
+      }
+      @media (max-width: 520px){
+        .brands-grid{ grid-template-columns: repeat(2, 1fr) !important; }
+        .brand{ height:86px !important; padding:10px !important; }
+      }
+    </style>
+  </section>
+
+  <section class="about-card contact-box" aria-label="Contact">
+    <h3>Get in Touch</h3>
+
+    <p>
+      For product enquiries, compatibility checks, or general questions,
+      reach out directly for a fast and clear response.
+    </p>
+
+    <p>
+      <strong>Email:</strong>
+      <a href="mailto:sales@jiedzhen.com">sales@jiedzhen.com</a><br>
+      <strong>Location:</strong> United Arab Emirates
+    </p>
+
+    <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+      <a href="https://wa.me/971586852620" target="_blank" class="cta-btn">Contact via WhatsApp</a>
+      <a href="index.html#products" class="cta-btn" style="background:linear-gradient(135deg, var(--surface), var(--surface-2));color:var(--text);border:1px solid color-mix(in srgb, var(--border) 85%, transparent);">Browse Products</a>
+    </div>
+  </section>
+
+</main>
+
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    © JIEDIZHEN Auto Spare Parts. All rights reserved.
+  </div>
+</footer>
+
+</body>
+</html>

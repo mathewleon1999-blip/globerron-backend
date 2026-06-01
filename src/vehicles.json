@@ -1,0 +1,74 @@
+[
+  {
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": "2018",
+    "engine": "1.8L"
+  },
+  {
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": "2019",
+    "engine": "1.8L"
+  },
+  {
+    "make": "Nissan",
+    "model": "Patrol",
+    "year": "2020",
+    "engine": "5.6L V8"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2005",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2006",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2007",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2008",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2009",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2010",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2011",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2012",
+    "engine": "3.0L"
+  },
+  {
+    "make": "Mercedes-Benz",
+    "model": "S-Class",
+    "year": "2013",
+    "engine": "3.0L"
+  }
+]

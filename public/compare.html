@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Parts</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/theme.js" defer></script>
+  <style>
+    /* Theme-aware Compare page
+       Uses global theme tokens from style.css.
+       (This file previously hardcoded a dark theme, so it never changed with the toggle.)
+    */
+
+    .compare-wrap {
+      max-width: 1280px;
+      margin: calc(var(--header-height) + var(--space-6)) auto var(--space-10);
+      padding: 0 var(--space-6);
+    }
+
+    /* Actions */
+    .compare-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .compare-actions .btn {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      background: linear-gradient(135deg, var(--surface), var(--surface-2));
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.18), inset 0 1px 0 rgba(255,255,255,0.12);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+    }
+    .compare-actions .btn:hover {
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
+    }
+    .compare-actions .btn:active { transform: translateY(0); }
+    .compare-actions .btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-color: transparent;
+      color: #061427;
+      box-shadow: 0 18px 46px rgba(56, 189, 248, 0.28);
+    }
+    .compare-actions .count { margin-left: auto; color: var(--muted); font-size: 14px; }
+
+    /* Table container */
+    .compare-grid {
+      overflow-x: auto;
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--surface) 80%, #ffffff),
+        color-mix(in srgb, var(--surface-2) 72%, #ffffff)
+      );
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      border-radius: 22px;
+      box-shadow: 0 26px 80px rgba(2, 6, 23, 0.22);
+      backdrop-filter: saturate(var(--glass-sat)) blur(calc(var(--glass-blur) - 4px));
+    }
+
+    /* Table */
+    .compare-table {
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 900px;
+      width: 100%;
+      color: var(--text);
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+      vertical-align: top;
+    }
+
+    .compare-table thead th {
+      position: sticky;
+      top: 0;
+      background: color-mix(in srgb, var(--surface) 72%, rgba(255,255,255,0.6));
+      backdrop-filter: saturate(var(--glass-sat)) blur(var(--glass-blur));
+      z-index: 2;
+      font-weight: 900;
+    }
+
+    body.dark .compare-table thead th {
+      background: rgba(2, 6, 23, 0.78);
+    }
+
+    .attr-col {
+      width: 240px;
+      background: color-mix(in srgb, var(--surface) 72%, rgba(255,255,255,0.5));
+      color: var(--muted);
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: 12px;
+    }
+
+    body.dark .attr-col {
+      background: rgba(2, 6, 23, 0.72);
+    }
+
+    /* Product header in sticky row */
+    .product-head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .product-head img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      background: color-mix(in srgb, var(--surface) 88%, #ffffff);
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      border-radius: 14px;
+      box-shadow: 0 18px 50px rgba(2, 6, 23, 0.22);
+      padding: 10px;
+    }
+    body.dark .product-head img {
+      background: rgba(2, 6, 23, 0.55);
+    }
+
+    .name { font-weight: 900; text-align: center; line-height: 1.2; }
+    .price { color: var(--primary); font-weight: 900; }
+
+    .remove {
+      margin-top: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+      background: color-mix(in srgb, var(--surface) 82%, #ffffff);
+      color: var(--text);
+      cursor: pointer;
+      transition: background .2s ease, transform .12s ease, border-color .2s ease;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+    }
+    .remove:hover {
+      background: color-mix(in srgb, var(--surface-2) 86%, #ffffff);
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
+    }
+
+    /* Row striping and hover */
+    .compare-table tbody tr:nth-child(odd) td { background: color-mix(in srgb, var(--surface-3) 70%, transparent); }
+    .compare-table tbody tr:hover td { background: color-mix(in srgb, var(--primary-50) 70%, transparent); }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 16px;
+      border: 1px dashed color-mix(in srgb, var(--border) 85%, transparent);
+      border-radius: 22px;
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--surface) 82%, #ffffff),
+        color-mix(in srgb, var(--surface-2) 74%, #ffffff)
+      );
+      box-shadow: 0 26px 80px rgba(2, 6, 23, 0.18);
+      backdrop-filter: saturate(var(--glass-sat)) blur(calc(var(--glass-blur) - 4px));
+    }
+
+    /* Lists */
+    ul.compact { margin: 0; padding-left: 18px; }
+
+    /* Responsive refinements */
+    @media (max-width: 768px) {
+      .attr-col { width: 180px; font-size: 11px; }
+      .product-head img { width: 96px; height: 96px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="compare-wrap">
+    <div class="compare-actions">
+      <button class="btn" id="back-btn">← Back to products</button>
+      <button class="btn" id="clear-btn">Clear all</button>
+      <span class="count" id="count"></span>
+    </div>
+
+    <div id="content"></div>
+  </div>
+
+  <script src="/compare-inline.js" defer></script>
+</body>
+</html>
